@@ -1,7 +1,7 @@
 # Test cases for FromBase10 function (milestone 2).
 
 # How to run:
-#   1. In Mars > Settings enable "Assemble all files in directory" 
+#   1. In Mars > Settings enable "Assemble all files in directory"
 #   2. Implement FromBase10 in "from_base10.asm" in the same folder/directory
 #   3. Use .globl directive for the ForBase10 symbol defined in "from_base10.asm" to export the symbol
 #   4. Assemble and run "from_base10_test.asm" (*not* "from_base10.asm")
@@ -21,8 +21,8 @@ out_numbers: .asciiz "a6", "1010", "zzz"
 
 # Reserve 33 bytes for the target number asciiz from FromBase10.
 # The longest target number string will be 32 long (for base 2).
-# And need 1 bytes for null termination. 
-result: .space 33  
+# And need 1 bytes for null termination.
+result: .space 33
 
 # Messages.
 fail: .asciiz "A test failed\n"

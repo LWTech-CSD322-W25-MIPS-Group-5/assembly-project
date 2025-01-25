@@ -22,4 +22,3 @@ out_bases: .word 16 2 -1
 # Terminate
 li $v0, 10
 syscall
-
