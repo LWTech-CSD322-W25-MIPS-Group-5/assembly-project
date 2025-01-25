@@ -11,9 +11,9 @@
 #   $a1: target number base (1 < $a1 < 37)
 #   $a2: address where the target number asciiz should be stored.
 # Return value:
-#   $v0: 0 on success, -1 on invalid args  
+#   $v0: 0 on success, -1 on invalid args
 FromBase10:
-# TODO: replace the following lines with an implemention of the function
+# TODO: replace the following lines with an implementation of the function
 # Test by running from_base10_test.asm
 li $v0, -1
 jr $ra

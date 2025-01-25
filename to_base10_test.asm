@@ -1,7 +1,7 @@
 # Test cases for ToBase10 function (milestone 1).
 
 # How to run:
-#   1. In Mars > Settings enable "Assemble all files in directory" 
+#   1. In Mars > Settings enable "Assemble all files in directory"
 #   2. Implement ToBase10 in "to_base10.asm" in the same folder/directory
 #   3. Use .globl directive for the ToBase10 symbol defined in "to_base10.asm" to export the symbol
 #   4. Assemble and run "to_base10_test.asm" (*not* "to_base10.asm")
@@ -24,7 +24,7 @@ fail: .asciiz "A test failed\n"
 success: .asciiz "All tests passed\n"
 
 .text
-# Excute each test case.
+# Execute each test case.
 
 li $s0, 0  # 4 * index of test case
 li $s1, 0  # offset into in_numbers asciiz for test case
