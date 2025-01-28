@@ -40,7 +40,7 @@ li $s1, 0  # offset into in_numbers asciiz for test case
 
 TestCase:
 lw $a0, in_bases($s0)  # a0: base of source number in test case
-bltz $a0, Success  # no more test cases, so terminate with success
+beq $a0, -1, Success  # no more test cases, so terminate with success
 la $a1, in_numbers($s1)  # a1: address of source number string in test case
 
 # Call ToBase10
