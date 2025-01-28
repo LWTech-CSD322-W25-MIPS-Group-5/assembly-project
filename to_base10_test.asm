@@ -12,14 +12,14 @@
 # 1010 in base 2 should be 10
 # zzz in base 36 should be 46655
 #
-# The end of the test cases is denoted bny sentinel values (e.g. -1 for in_bases).
+# The end of the test cases is denoted by sentinel values (e.g. -1 for in_bases).
 #
 # TODO: feel free to add more test cases as you see fit.
 
 in_bases: .word 16, 2, 36, -1
 in_numbers: .asciiz "a6", "1010", "zzz"
 .align 2  # align the out_numbers on a word boundary (after the asciiz data)
-out_numbers: .word 166, 10, 46655, -1
+out_numbers: .word 166, 10, 46655
 fail: .asciiz "A test failed\n"
 success: .asciiz "All tests passed\n"
 
