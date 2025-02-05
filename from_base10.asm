@@ -14,6 +14,30 @@
 #   $v0: 0 on success, -1 on invalid args
 FromBase10:
 # TODO: replace the following lines with an implementation of the function
+
+# Validate target base.
+li      $t0, 1
+ble     $a1, $t0, invalid_args
+li      $t0, 37
+bge     $a1, $t0, invalid_args
+
+doWhileLoop:
+div $s0, $a0, $a1 
+#Divide
+div $s0, $a0, $a1 
+mflo $s1 # remainder
+mfhi $s3 # quotient
+move $s3, $s0 # update the number
+sb $s1, $a2 # store the remainder in the address
+beqz $s0, doWhileLoop # repeat this process until the quotient is zero
+
+
+
+invalid_args:
+li      $v0, -1
+return:
+jr      $v0, 0
+
 # Test by running from_base10_test.asm
 li $v0, -1
 jr $ra
