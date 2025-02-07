@@ -22,22 +22,30 @@ li      $t0, 37
 bge     $a1, $t0, invalid_args
 
 doWhileLoop:
-div $s0, $a0, $a1 
 #Divide
-div $s0, $a0, $a1 
-mflo $s1 # remainder
-mfhi $s3 # quotient
-move $s3, $s0 # update the number
-sb $s1, $a2 # store the remainder in the address
-beqz $s0, doWhileLoop # repeat this process until the quotient is zero
+div $a0, $a1
+mfhi $t0 # remainder
+mflo $a0 # quotient
 
+bgeu $t0, 10, quotient_at_least_ten
+addi $t0, $t0, '0'
+j got_character
+quotient_at_least_ten:
+subi $t0, $t0, 10
+addi $t0, $t0, 'a'
+got_character:
+sb $t0, 0($a2) # store the remainder in the address
+add $a2, $a2, 1
+beqz $a0, end_loop # repeat this process until the quotient is zero
+j doWhileLoop
+end_loop:
 
+sb $zero, 0($a2)
+
+li $v0, 0
+jr $ra
 
 invalid_args:
-li      $v0, -1
-return:
-jr      $v0, 0
-
 # Test by running from_base10_test.asm
 li $v0, -1
 jr $ra
