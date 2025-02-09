@@ -19,6 +19,28 @@ out_bases: .word 16 2 -1
 
 # TODO: implement.
 
+li $s0, 0  # 4 * index of  test case
+li $s1, 0  # offset into in_numbers asciiz for test case
+
+la $t0, in_numbers
+add $a1, $t0, $s1
+
+li $v0, 1
+move $a0, $a1
+syscall
+
+li $v0, 4
+la $a1, in_numbers($s1)  # a1: address of source number string in test case
+syscall
+
+
+jal ToBase10
+
+move $a1, $a2
+
+jal FromBase10
+
+
 # Terminate
 li $v0, 10
 syscall
