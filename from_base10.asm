@@ -27,10 +27,10 @@ div $a0, $a1
 mfhi $t0 # remainder
 mflo $a0 # quotient
 
-bgeu $t0, 10, quotient_at_least_ten
+bgeu $t0, 10, remainder_at_least_ten
 addi $t0, $t0, '0'
 j got_character
-quotient_at_least_ten:
+remainder_at_least_ten:
 subi $t0, $t0, 10
 addi $t0, $t0, 'a'
 got_character:
