@@ -21,6 +21,7 @@ ble     $a1, $t0, invalid_args
 li      $t0, 37
 bge     $a1, $t0, invalid_args
 
+move $t1, $a2
 doWhileLoop:
 #Divide
 div $a0, $a1
@@ -34,13 +35,30 @@ remainder_at_least_ten:
 subi $t0, $t0, 10
 addi $t0, $t0, 'a'
 got_character:
-sb $t0, 0($a2) # store the remainder in the address
-add $a2, $a2, 1
-beqz $a0, end_loop # repeat this process until the quotient is zero
+sb $t0, 0($t1) # store the remainder in the address
+add $t1, $t1, 1
+beqz $a0, end_loop_0 # repeat this process until the quotient is zero
 j doWhileLoop
-end_loop:
+end_loop_0:
 
-sb $zero, 0($a2)
+sb $zero, 0($t1)
+
+# reverse the string
+subi $t1, $t1, 1 # go back to just before the null terminator
+whileLeftLessThanRight:
+bgeu $a2, $t1, end_loop_1
+
+# swap
+lbu $t0, ($a2) # load character from *left
+lbu $t2, ($t1) # load character from *right
+sb $t2, ($a2)
+sb $t0, ($t1)
+
+addi $a2, $a2, 1 # left++
+subi $t1, $t1, 1 # right--
+
+j whileLeftLessThanRight
+end_loop_1:
 
 li $v0, 0
 jr $ra
