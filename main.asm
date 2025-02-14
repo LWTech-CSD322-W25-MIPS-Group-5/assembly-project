@@ -11,9 +11,9 @@
 .data
 
 # TODO: Add as many additional cases as you see fit.
-in_bases: .word 2 16 -1
-in_numbers: .asciiz "101011" "2b" ""
-out_bases: .word 16 2 -1
+in_bases: .word 2 16 8 10 -1
+in_numbers: .asciiz "101011" "2b" "2471" "42" ""
+out_bases: .word 16 2 10 36 -1
 
 .text
 
@@ -22,17 +22,26 @@ out_bases: .word 16 2 -1
 li $s0, 0  # 4 * index of  test case
 li $s1, 0  # offset into in_numbers asciiz for test case
 
-la $t0, in_numbers
-add $a1, $t0, $s1
+# while we still have test cases
+loop:
 
+# Read source base from in_bases
+lw $t0, in_bases
+bltz $t0, break
+move $a0, $t0
 li $v0, 1
-move $a0, $a1
 syscall
 
-li $v0, 4
-la $a1, in_numbers($s1)  # a1: address of source number string in test case
-syscall
+# probably add line breaks
 
+# Read source number from in_numbers
+# la $t2, in_numbers($s1)  # a1: address of source number string in test case
+# move $a0, $t1
+# li $v0, 4
+# syscall
+
+# la $t2, in_numbers($s1)  # a1: address of source number string in test case
+# syscall
 
 jal ToBase10
 
@@ -40,6 +49,8 @@ move $a1, $a2
 
 jal FromBase10
 
+j loop
+break:
 
 # Terminate
 li $v0, 10
