@@ -35,10 +35,11 @@ syscall
 # probably add line breaks
 
 # Read source number from in_numbers
-# la $t2, in_numbers($s1)  # a1: address of source number string in test case
-# move $a0, $t1
-# li $v0, 4
-# syscall
+la $t2, in_numbers($s1)  # a1: address of source number string in test case
+add $t1, $t2, $zero 
+li $v0, 4
+move $a0, $t1
+syscall
 
 # la $t2, in_numbers($s1)  # a1: address of source number string in test case
 # syscall
