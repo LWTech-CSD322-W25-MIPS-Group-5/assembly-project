@@ -14,7 +14,8 @@
 in_bases: .word 2 16 8 10 -1
 in_numbers: .asciiz "101011" "2b" "2471" "42" ""
 out_bases: .word 16 2 10 36 -1
-
+result: .space 33
+out_numbers: .asciiz  "2b" "101011"
 .text
 
 # TODO: implement.
@@ -41,14 +42,48 @@ li $v0, 4
 move $a0, $t1
 syscall
 
+
 # la $t2, in_numbers($s1)  # a1: address of source number string in test case
 # syscall
 
+move $a0, $t0  # Move source base to $a0
+move $a1, $t1  # Move source number string address to $a1
 jal ToBase10
 
-move $a1, $a2
+# Pass result from ToBase10 as argument for FromBase10 
+move $a0, $v0
 
+#Print result to check if procedure returned correct result 
+li $v0, 1
+syscall
+
+lw $a1, out_bases
+
+la $a2, result
 jal FromBase10
+
+# Print target number
+lw $a0, result($zero)
+
+li $s0, 0
+li $t0, 0
+
+CheckDigit:
+lbu $s2, out_numbers($s1)
+lbu $s3, result($t0)
+#bne $s2, $s3, Error  # test case failed
+add $s1, $s1, 1
+add $t0, $t0, 1
+bnez $s2, CheckDigit
+#lbu $s3, result($zero)
+li $v0, 1
+syscall
+
+# Read target base from out_bases
+lw $t0, out_bases
+li $v0, 1
+move $a0, $t0
+syscall
 
 j loop
 break:
