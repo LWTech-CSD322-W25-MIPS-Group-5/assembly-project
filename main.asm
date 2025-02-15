@@ -40,7 +40,7 @@ syscall
 
 # Read source number from in_numbers
 la $t2, in_numbers($s1)  # a1: address of source number string in test case
-add $t1, $t2, $zero 
+move $t1, $t2
 li $v0, 4
 move $a0, $t1
 syscall
@@ -61,7 +61,7 @@ sw $s1, 8($sp)
 jal ToBase10
 
 # Pop registers from stack
-sw $ra, 0($sp)
+lw $ra, 0($sp)
 lw $s0, 4($sp)
 lw $s1, 8($sp)
 addi $sp, $sp, 12
@@ -69,7 +69,7 @@ addi $sp, $sp, 12
 # Pass result from ToBase10 as argument for FromBase10 
 move $a0, $v0
 
-lw $a1, out_bases
+lw $a1, out_bases($s0)
 
 la $a2, result
 
@@ -82,13 +82,11 @@ sw $s1, 8($sp)
 jal FromBase10
 
 # Pop registers from stack
-sw $ra, 0($sp)
+lw $ra, 0($sp)
 lw $s0, 4($sp)
 lw $s1, 8($sp)
 addi $sp, $sp, 12
 
-# Offset of result
-#li $t0, 0
 
 # Print target number
 la $a0, result
@@ -100,7 +98,7 @@ li $a0, '\n'
 syscall
 
 # Print target base from out_bases
-lw $t0, out_bases($s1)
+lw $t0, out_bases($s0)
 li $v0, 1
 move $a0, $t0
 syscall
@@ -108,14 +106,15 @@ syscall
 li $v0, 11
 li $a0, '\n'
 syscall
-
-li $v0, 11
-li $a0, '\n'
 syscall
 
-add $s0, $s0, 4
+# Increment $s1 to point to next test case's source number.
+NextNumber:
+lbu $t0, in_numbers($s1)
 add $s1, $s1, 1
+bnez $t0, NextNumber
 
+add $s0, $s0, 4
 j loop
 break:
 
