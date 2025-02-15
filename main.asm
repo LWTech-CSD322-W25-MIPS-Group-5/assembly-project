@@ -20,6 +20,7 @@ result: .space 33
 
 # TODO: implement.
 
+
 li $s0, 0  # 4 * index of  test case
 li $s1, 0  # offset into in_numbers asciiz for test case
 
@@ -27,7 +28,7 @@ li $s1, 0  # offset into in_numbers asciiz for test case
 loop:
 
 # Read source base from in_bases
-lw $t0, in_bases
+lw $t0, in_bases($s0)
 bltz $t0, break
 move $a0, $t0
 li $v0, 1
@@ -50,18 +51,47 @@ syscall
 
 move $a0, $t0  # Move source base to $a0
 move $a1, $t1  # Move source number string address to $a1
+
+# Push registers to preserve on to stack
+addi $sp, $sp, -12
+sw $ra, 0($sp)
+sw $s0, 4($sp)
+sw $s1, 8($sp)
+
 jal ToBase10
 
+# Pop registers from stack
+sw $ra, 0($sp)
+lw $s0, 4($sp)
+lw $s1, 8($sp)
+addi $sp, $sp, 12
+ 
 # Pass result from ToBase10 as argument for FromBase10 
 move $a0, $v0
 
 lw $a1, out_bases
 
 la $a2, result
+
+# Push registers to preserve on to stack
+addi $sp, $sp, -12
+sw $ra, 0($sp)
+sw $s0, 4($sp)
+sw $s1, 8($sp)
+
 jal FromBase10
 
+# Pop registers from stack
+sw $ra, 0($sp)
+lw $s0, 4($sp)
+lw $s1, 8($sp)
+addi $sp, $sp, 12
+
+# Offset of result
+#li $t0, 0
+
 # Print target number
-lw $a0, result($zero)
+la $a0, result
 li $v0, 4
 syscall
 
@@ -70,7 +100,7 @@ li $a0, '\n'
 syscall
 
 # Print target base from out_bases
-lw $t0, out_bases
+lw $t0, out_bases($s1)
 li $v0, 1
 move $a0, $t0
 syscall
@@ -78,6 +108,13 @@ syscall
 li $v0, 11
 li $a0, '\n'
 syscall
+
+li $v0, 11
+li $a0, '\n'
+syscall
+
+add $s0, $s0, 4
+add $s1, $s1, 1
 
 j loop
 break:
